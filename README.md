@@ -1,4 +1,4 @@
-# jangoadmin<br>
+# djangoadmin<br>
 - sudo apt-get install libmysqlclient-dev<br>
 - python3.6 -m pip install -r requirements.txt<br>
 - python3.6 manage.py migrate<br>
