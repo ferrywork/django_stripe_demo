@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>Stripe | Add Card </title>
+{% endblock %}
+{% block content %}
+<div class="single-pro-review-area mt-t-30 mg-b-15">
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+         <div class="product-payment-inner-st">
+            {% if success_msg %}
+            <div class="alert alert-success">{{success_msg}}</div>
+            {% endif %}
+            {% if msg %}
+            <div class="alert alert-danger">{{msg}}</div>
+            {% endif %}
+            <ul id="myTabedu1" class="tab-review-design">
+               <li class="active"><a href="#description">Add Card</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content custom-product-edit">
+               <div class="product-tab-list tab-pane fade active in" id="description">
+                  <div class="row">
+                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="review-content-section">
+                           <div id="dropzone1" class="pro-ad">
+                              <form id="payment-form" role ="form_area" classs ="colored "class="dropzone dropzone-custom needsclick add-professors ">
+                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                       <input name="full_name"  type="text" class="form-control" placeholder="Customer Full name" value="" required="required" id="full_name"><span
+                                          class="error-msg"
+                                          id="span_product_type_code"></span>
+                                    </div>
+                                    <input style="display: none;" value="{{publisher_key}}" name="publisher_key" >
+                                    <input style="display: none;" value="{{request.user.email}}" name="requested_user_email" >
+                                    <input style="display: none;" value="{{request.user.username}}" name="username_id" >
+                                    <div class="row ml-md-5">
+                                       <div class ="col-md-8 ml-md-5 mb-3 mb-md-0">
+                                          <div id="card-element">
+                                             <!-- Elements will create input elements here -->
+                                          </div>
+                                          <!-- We'll put the error messages in this element -->
+                                          <div id="card-errors" role="alert"></div>
+                                       </div>
+                                    </div>
+                                    <div class ="col-md-4 text-center" style="width: 10%;margin-top: 24px !important;">
+                                       <button type="submit" class="btn btn-primary waves-effect waves-light" id="submit">Pay</button>
+                                    </div>
+
+                              </form>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="{% static 'js/aos.js' %}"></script>
+<script>
+   AOS.init({
+      easing: 'ease-in-out-sine'
+   });
+         
+   
+      var publisher_key_value = $("[name=publisher_key]").val()
+             var stripe = Stripe(publisher_key_value)
+      var elements = stripe.elements();
+             var style = {
+                 base: {
+                     color: "#32325d",
+                 }
+             };
+             var card = elements.create("card", { style: style });
+             card.mount("#card-element");
+   
+   
+   
+   
+         // on input change
+         card.on('change', ({error}) => {
+             const displayError = document.getElementById('card-errors');
+             if (error) {
+                 displayError.textContent = error.message;
+             } else {
+                 displayError.textContent = '';
+             }
+         });
+   
+   
+   //get intent from server
+     let clientSecret
+     console.log("vzcustomer_stripe_id",'{{customer_stripe_id}}')
+
+   {% if not customer_stripe_id %}
+     var xhr = new XMLHttpRequest();
+     fdata = new FormData();
+     fdata.append("csrfmiddlewaretoken", $("[name=csrfmiddlewaretoken]").val())
+     fdata.append("requested_user_email", $("[name=requested_user_email]").val())
+     fdata.append("username_id", $("[name=username_id]").val())
+   
+     xhr.open("POST", "/users/add_card/");
+     xhr.setRequestHeader("cache-control", "no-cache");
+     xhr.send(fdata);
+     xhr.addEventListener("readystatechange", function () {
+         if (this.readyState === 4) {
+         
+      var c = this.response
+      c = JSON.parse(c)
+      if (c['status'] == 200) {
+         console.log("success",c)
+         clientSecret=c['data']['intent']
+      }
+      else{
+         console.log("error")
+      }
+   
+      }
+     })
+   
+   
+   
+   
+   // Submit Form
+   var form = document.getElementById('payment-form');
+   form.addEventListener('submit', function(ev) {
+      ev.preventDefault();
+   
+      var error_count=0
+      $('#full_name-err').addClass("hidden");
+      //return if name is empty
+      let full_name  = $('#payment-form #full_name').val().trim()
+      $('#payment-form #full_name').val(full_name);
+      if(full_name.length===0 ){
+         $('#full_name-err').removeClass("hidden");
+         error_count+= 1;
+      }
+      if( error_count!=0){
+         return 0;
+      }
+   
+   
+   
+   
+   
+   
+      stripe.confirmCardPayment(clientSecret, {
+         payment_method: {
+         card: card,
+         billing_details: {
+            name: full_name,
+            address:'abcsad asdasasd',
+         }
+         }
+      }).then(function(result) {
+   
+         if (result.error) {
+         // Show error to your customer (e.g., insufficient funds)
+         Swal.fire(
+               'Something Went Wrong!',
+                result.error.message,
+               'error'
+            )
+         } else {
+         // The payment has been processed!
+         if (result.paymentIntent.status === 'succeeded') {
+            // console.log("Payment Successffuull")
+   
+   
+            Swal.fire(
+               'Success!',
+               'Payment Done Successfully.',
+               'success'
+            )
+         
+            // Show a success message to your customer
+            // There's a risk of the customer closing the window before callback
+            // execution. Set up a webhook or plugin to listen for the
+            // payment_intent.succeeded event that handles any business critical
+            // post-payment actions.
+   
+            // NOW HITTING AJAX THAT SAVES USER PLAN DETAILS,USER CARD DETAILS
+            console.log('Card is',result)
+            console.log('Client secret is',form)
+   
+            var token =$('#token').attr('value')
+            var Url = "/users/payment_done/";
+            $.ajax({
+
+            type: 'POST',
+            url: Url,
+            data: {
+               'transaction_id':result.paymentIntent.id,
+               'amount':result.paymentIntent.amount,
+            },
+            headers:{
+                 "X-CSRFToken": token   
+            },
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+               console.log("success, now redirect to dashboard",data);
+               console.log("success, now redirect to dashboard",data['status']);
+   
+               if (data['status'] == '200'){
+                  window.location.href = "/";
+               }
+               else{
+                  $("#show_ajx_msg_error").text("Something went wrong,please try again later");
+                  $('#show_ajx_msg_error').css("display", "block");
+                  var msg_ajax = document.getElementById("show_ajx_msg_error");
+                  setTimeout(function () {
+                     $(msg_ajax).css("display", "none");
+                  }, 1000);
+               }
+               
+            },
+            error: function () {
+
+               $("#show_ajx_msg_error").text("Something went wrong,please try again later");
+               $('#show_ajx_msg_error').css("display", "block");
+               var msg_ajax = document.getElementById("show_ajx_msg_error");
+               setTimeout(function () {
+                  $(msg_ajax).css("display", "none");
+               }, 1000);
+            }
+                  });
+   
+   
+   
+         }
+         }
+      });
+   });
+   {% endif %}
+
+      
+   
+</script>
+{% endblock %}

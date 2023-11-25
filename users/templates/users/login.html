@@ -1,0 +1,196 @@
+{% load static %}
+<html class="no-js" lang="en">
+
+   <head>
+      <script src="{% static 'js/common_js/jquery-1.12.4.min.js' %}"></script>
+      <style type="text/css">
+         .form-control.has-error {
+         border: 1px solid #FB404B !important;
+         color: #FB404B !important;
+         }
+         .form-control.has-success {
+         border: 1px solid #28a745 !important;
+         color: #28a745 !important;
+         }
+         .error-msg {
+         color: red;
+         font-size: 13px;
+         margin: 3px;
+      </style>
+      <meta charset="utf-8">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      {% block title %}
+      <title> Stripe Django | Login </title>
+      {% endblock %}
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- favicon
+         ============================================ -->
+      <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+      <!-- Google Fonts
+         ============================================ -->
+      <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+      <!-- Bootstrap CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/bootstrap.min.css' %}">
+      <!-- Bootstrap CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/font-awesome.min.css' %}">
+      <!-- owl.carousel CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/owl.carousel.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/owl.theme.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/owl.transitions.css' %}">
+      <!-- animate CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/animate.css' %}">
+      <!-- normalize CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/normalize.css' %}">
+      <!-- meanmenu icon CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/meanmenu.min.css' %}">
+      <!-- main CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/main.css' %}">
+      <!-- forms CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/all-type-forms.css' %}">
+      <!-- educate icon CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/educate-custon-icon.css' %}">
+      <!-- morrisjs CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/morris.css' %}">
+      <!-- dropzone CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/dropzone.css' %}">
+      <!-- mCustomScrollbar CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/jquery.mCustomScrollbar.min.css' %}">
+      <!-- metisMenu CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/metisMenu.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/metisMenu-vertical.css' %}">
+      <!-- calendar CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/fullcalendar.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/fullcalendar.print.min.css' %}">
+      <!-- style CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/style.css' %}">
+      <!-- responsive CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/responsive.css' %}">
+      <!-- modernizr JS
+         ============================================ -->
+   </head>
+   <body>
+      <div class="error-pagewrap">
+         <div class="error-page-int">
+            <div class="text-center m-b-md custom-login">
+               <h3>Stripe User Login</h3>
+            </div>
+            <div class="content-error">
+               <div class="hpanel">
+                  <div class="panel-body">
+                      {% if msg %}
+                        <div class="alert alert-danger">{{msg}}</div>
+                        {% endif %}
+                        {% if sucess_msg %}
+                        <div class = "alert alert-success">{{sucess_msg}}</div>
+                        {% endif %}
+                     <form action="/users/login/" id="loginForm" method="POST">
+                     	{% csrf_token %}
+                        <div class="form-group">
+                           <label class="control-label" for="username">Email</label>
+                           <input type="email" placeholder="Email" title="Please enter your email" name="email" id="username" class="form-control" onkeyup="UserNameValidate()">
+                           <span class="error-msg" id="username_label"></span>
+                       </div>
+                        <div class="form-group">
+                           <label class="control-label" for="password">Password</label>
+                           <input type="password" title="Please enter your password" placeholder="******" name="password" id="password" class="form-control" onkeyup="PasswordValidate()">
+                           <span class="error-msg" id="password_label"></span>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block loginbtn">Login</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            <div class="text-center login-footer">
+               <p>Copyright © 2021. All rights reserved. Template by <a href=".">Stripe Django</a></p>
+            </div>
+         </div>
+      </div>var usename_val = localStorage.getItem("username_id"); //"USERNAME" COOKIE
+    var password_val = localStorage.getItem("registerPassword"); //"PASSWORD" COOKIE
+      <!-- bootstrap JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/bootstrap.min.js' %}"></script>
+      <!-- wow JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/wow.min.js' %}"></script>
+      <!-- price-slider JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery-price-slider.js' %}"></script>
+      <!-- meanmenu JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.meanmenu.js' %}"></script>
+      <!-- owl.carousel JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/owl.carousel.min.js' %}"></script>
+      <!-- sticky JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.sticky.js' %}"></script>
+      <!-- scrollUp JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.scrollUp.min.js' %}"></script>
+      <!-- mCustomScrollbar JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+      <script src="{% static 'js/common_js/mCustomScrollbar-active.js' %}"></script>
+      <!-- metisMenu JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/metisMenu.min.js' %}"></script>
+      <script src="{% static 'js/common_js/metisMenu-active.js' %}"></script>
+      <!-- morrisjs JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.sparkline.min.js' %}"></script>
+      <script src="{% static 'js/common_js/jquery.charts-sparkline.js' %}"></script>
+      <!-- calendar JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/moment.min.js' %}"></script>
+      <script src="{% static 'js/common_js/fullcalendar.min.js' %}"></script>
+      <script src="{% static 'js/common_js/fullcalendar-active.js' %}"></script>
+      <!-- maskedinput JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.maskedinput.min.js' %}"></script>
+      <script src="{% static 'js/common_js/masking-active.js' %}"></script>
+      <!-- datepicker JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery-ui.min.js' %}"></script>
+      <script src="{% static 'js/common_js/datepicker-active.js'%}"></script>
+      <!-- form validate JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.form.min.js' %}"></script>
+      <script src="{% static 'js/common_js/jquery.validate.min.js' %}"></script>
+      <script src="{% static 'js/common_js/form-active.js' %}"></script>
+      <!-- dropzone JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/dropzone.js' %}"></script>
+      <!-- tab JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/tab.js' %}"></script>
+      <!-- plugins JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/plugins.js' %}"></script>
+      <!-- main JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/main.js' %}"></script>
+      <!-- tawk chat JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/tawk-chat.js' %}"></script>
+      <script src ="{% static 'js/common_js/login_re.js' %}"></script>
+
+   </body>
+</html>

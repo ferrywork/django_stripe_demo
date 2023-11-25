@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>Stripe | Product Price Listing</title>
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="product-status mg-b-15">
+  <div class="container-fluid">
+     <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+           <div class="product-status-wrap">
+              <h4>Listing Product Price</h4>
+              <div class="add-product">
+                 <a href="/users/PriceAdd/">Add Product Price</a>
+              </div>
+              {% if success_msg %}
+              <div class="alert alert-success">{{success_msg}}</div>
+              {% endif %}
+              {% if msg %}
+              <div class="alert alert-danger">{{msg}}</div>
+              {% endif %}
+              <div class="asset-inner">
+                 <table>
+                    <tr>
+                       <th>Serial No</th>
+                       <th>Product Id</th>
+                       <th>Product Name</th>
+                       <th>Price</th>
+                       <th>Price Id</th>
+
+                       <th>Actions</th>
+
+                    </tr>
+                    {% for one in all_prices %}
+                    <tr>
+                       <td>{{forloop.counter}}</td>
+                       <td>{% if one.stripe_product_id %} {{one.stripe_product_id.type_code}} {% else %} ----- {% endif %}</td>
+                       <td>{{one.stripe_product_id.type_name_english|capfirst}}</td>
+                       <td>{{one.price_per_month}}</td>
+                       <td>{{one.stripe_price_id}}</td>
+
+                       <td>
+
+<!--                         <a  href = "">  <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+ -->
+<!--                          <a href = "#" class = "deleting_product" data-id="{{one.id}}">
+                          <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button></a>
+ -->                         <label class="switch">
+                       <input class="root" data-id="{{one.id}}"  type="checkbox" {% if one.is_active is True %}
+                       checked {% else %} unchecked {% endif %}>
+                       <span  data-toggle="popover" data-trigger="hover" data-placement="top" {% if one.is_active is True %}
+                       data-content="Active" {% else %} data-content="Inactive" {% endif %}class="slider round" style="background-color:#2a72d2"></span>
+                         </label>
+                       </td>
+
+                    </tr>
+                    {% endfor %}
+                
+                 </table>
+              </div>
+              <div class="custom-pagination">
+                 <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                 </ul>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(".root").on('change', function(){
+  var id   = $(this).attr('data-id');
+  $.ajax({
+      url : '/users/DeactivatePrice/',
+      data : {'id' : id},
+      type : 'GET',
+      success: function(response){
+        console.log("response",response)
+        window.location.reload();
+      }
+    })
+ })
+</script>
+
+{% endblock %}

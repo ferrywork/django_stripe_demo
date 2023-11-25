@@ -1,0 +1,485 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+   {% block head %}
+   <head>
+      <style type="text/css">
+         .form-control.has-error {
+         border: 1px solid #FB404B !important;
+         color: #FB404B !important;
+         }
+         .form-control.has-success {
+         border: 1px solid #28a745 !important;
+         color: #28a745 !important;
+         }
+         .error-msg {
+         color: red;
+         font-size: 13px;
+         margin: 3px;
+         }
+         .dropzone.dz-clickable .dz-message {
+         display: none;
+         }
+         .swal-button--cancel {
+         color: black;
+         background-color: darkgray;
+         }
+         .swal-button-container {
+         margin-right: 22%;
+         }
+      </style>
+      <style>
+         /* my custom toggle css*/
+         .switch {
+         position: relative;
+         display: inline-block;
+         width: 35px;
+         height: 20px;
+         }
+         .switch input { 
+         opacity: 0;
+         width: 0;
+         height: 0;
+         }
+         .slider {
+         position: absolute;
+         cursor: pointer;
+         top: 0;
+         left: -2px;
+         right: -2px;
+         bottom: 0;
+         background-color: #ccc!important;
+         -webkit-transition: .4s;
+         transition: .4s;
+         }
+         .slider:before {
+         position: absolute;
+         content: "";
+         height: 14px;
+         width: 16px;
+         left: 1px;
+         bottom: 2.7px;
+         background-color: white;
+         -webkit-transition: .4s;
+         transition: .4s;
+         border-radius:10px;
+         }
+         input:checked + .slider {
+         background-color:#3e7fc1!important;
+         }
+         input:focus + .slider {
+         box-shadow: 0 0 1px #2196F3;
+         }
+         input:checked + .slider:before {
+         -webkit-transform: translateX(46px);
+         -ms-transform: translateX(46px);
+         transform: translateX(21px);
+         }
+         /* Rounded sliders */
+         .slider.round {
+         border-radius: 34px;
+         }
+         /*end here toggle css*/
+      </style>
+      <style type="text/css">
+         .chosen-container-single .chosen-single {
+         height: 41px !important;
+         line-height: 39px !important;
+         }
+      </style>
+      <meta charset="utf-8">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- favicon
+         ============================================ -->
+      <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+      <!-- Google Fonts
+         ============================================ -->
+      <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+      <!-- Bootstrap CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/bootstrap.min.css' %}">
+      <!-- Bootstrap CSS
+         ============================================ -->
+
+      <script src="https://js.stripe.com/v3/"></script>
+
+      <!-- chosen CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/bootstrap-chosen.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/font-awesome.min.css' %}">
+      <!-- owl.carousel CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/owl.carousel.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/owl.theme.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/owl.transitions.css' %}">
+      <!-- animate CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/animate.css' %}">
+      <!-- normalize CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/normalize.css' %}">
+      <!-- meanmenu icon CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/meanmenu.min.css' %}">
+      <!-- main CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/main.css' %}">
+      <!-- forms CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/all-type-forms.css' %}">
+      <!-- educate icon CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/educate-custon-icon.css' %}">
+      <!-- morrisjs CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/morris.css' %}">
+      <!-- dropzone CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/dropzone.css' %}">
+      <!-- mCustomScrollbar CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/jquery.mCustomScrollbar.min.css' %}">
+      <!-- metisMenu CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/metisMenu.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/metisMenu-vertical.css' %}">
+      <!-- calendar CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/fullcalendar.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/fullcalendar.print.min.css' %}">
+      <!-- touchspin CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/jquery.bootstrap-touchspin.min.css' %}">
+      <!-- forms CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/themesaller-forms.css' %}">
+      <!-- datapicker CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/datepicker3.css' %}">
+      <!-- colorpicker CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/colorpicker.css' %}">
+      <!-- select2 CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/select2.min.css' %}">
+      <!-- ionRangeSlider CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/ion.rangeSlider.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/ion.rangeSlider.skinFlat.css' %}">
+      <!-- style CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/common_css/style.css' %}">
+      <!-- responsive CSS
+         ============================================ -->
+      <link rel="stylesheet" href="{% static 'css/summernote/summernote.css' %}">
+      <link rel="stylesheet" href="{% static 'css/common_css/responsive.css' %}">
+      <!-- modernizr JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery-1.12.4.min.js' %}"></script>
+      <script src="{% static 'js/common_js/modernizr-2.8.3.min.js' %}"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+   </head>
+   {% endblock %}
+   <body>
+      <!--[if lt IE 8]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <![endif]-->
+      <!-- Start Left menu area -->
+      <div class="left-sidebar-pro">
+         <nav id="sidebar" class="">
+            <div class="sidebar-header">
+               <a href=".">
+                  <img class="main-logo" src="{% static 'img/logo/logosn.png' %}" alt="" />
+                  <h4>Stripe Payment</h4>
+               </a>
+               <strong><a href="."><img src="{% static 'img/logo/logosn.png' %}" alt="" /></a></strong>
+            </div>
+            <div class="left-custom-menu-adp-wrap comment-scrollbar">
+               <nav class="sidebar-nav left-sidebar-menu-pro">
+                  <ul class="metismenu" id="menu1">
+                     <ul class="submenu-angle" aria-expanded="true">
+                        <li><a title="List Products" href="/users/product_list/"><span class="mini-sub-pro">Product List</span></a></li>
+                     </ul>
+                     <ul class="submenu-angle" aria-expanded="true">
+                        <li><a title="List Products" href="/users/price_list/"><span class="mini-sub-pro">Prices List</span></a></li>
+                     </ul>
+                     <ul class="submenu-angle" aria-expanded="true">
+                        <li><a title="List Products" href="/users/add_card/"><span class="mini-sub-pro">Add Card</span></a></li>
+                     </ul>
+                     </li>
+                  </ul>
+               </nav>
+            </div>
+         </nav>
+      </div>
+      <!-- End Left menu area -->
+      <!-- Start Welcome area -->
+      <div class="all-content-wrapper">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="logo-pro">
+                     <a href="#"><img class="main-logo" src="{% static 'img/logo/logo.png' %}" alt="" /></a>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="header-advance-area">
+            <div class="header-top-area">
+               <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="header-top-wraper">
+                           <div class="row">
+                              <div class="col-lg-1 col-md-0 col-sm-1 col-xs-12">
+                                 <div class="menu-switcher-pro">
+                                    <button type="button" id="sidebarCollapse" class="btn bar-button-pro header-drl-controller-btn btn-info navbar-btn">
+                                    <i class="educate-icon educate-nav"></i>
+                                    </button>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
+                                 <div class="header-top-menu tabl-d-n">
+                                    <ul class="nav navbar-nav mai-top-nav">
+                                       <!--                                        <li class="nav-item"><a href="#" class="nav-link">Home</a>
+                                          </li>
+                                          <li class="nav-item"><a href="#" class="nav-link">About</a>
+                                          </li>
+                                          <li class="nav-item"><a href="#" class="nav-link">Services</a>
+                                          </li>
+                                          <li class="nav-item"><a href="#" class="nav-link">Support</a>
+                                          </li>
+                                          -->                                    
+                                    </ul>
+                                 </div>
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                 <div class="header-right-info">
+                                    <ul class="nav navbar-nav mai-top-nav header-right-menu">
+                                       <li class="nav-item open">
+                                          <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
+                                          <img src="{% static 'img/profile/user.png' %}" alt="" />
+                                          <span class="admin-name">{{request.user.username|capfirst}}</span>
+                                          <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
+                                          </a>
+                                          <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
+                                             </li>
+                                             </li>
+                                             <li><a href="#" id = 'logout_button'><span class="edu-icon edu-locked author-log-ic"></span>Log Out</a>
+                                          </ul>
+                                       </li>
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Mobile Menu start -->
+            <div class="mobile-menu-area">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="mobile-menu">
+                           <nav id="dropdown">
+                              <ul class="mobile-menu-nav">
+                                 <li>
+                                    <a data-toggle="collapse" data-target="#Charts" href="#">Home <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                    <ul class="collapse dropdown-header-top">
+                                       <li><a href="#">Dashboard v.1</a></li>
+                                       <li><a href="#">Dashboard v.2</a></li>
+                                       <li><a href="#">Dashboard v.3</a></li>
+                                       <li><a href="#">Analytics</a></li>
+                                       <li><a href="#">Widgets</a></li>
+                                    </ul>
+                                 </li>
+                              </ul>
+                           </nav>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Mobile Menu end -->
+            <div class="breadcome-area">
+               <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcome-list single-page-breadcome">
+                           <div class="row">
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                 <div class="breadcome-heading">
+                                    <form role="search" class="sr-input-func">
+                                       <input type="text" placeholder="Search..." class="search-int form-control">
+                                       <a href="#"><i class="fa fa-search"></i></a>
+                                    </form>
+                                 </div>
+                              </div>
+                              {% if request.resolver_match.url_name == 'AddressListing'  %}
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                 <ul class="breadcome-menu">
+                                    <li><a href="#">Electra</a>
+                                    </li>
+                                 </ul>
+                              </div>
+                              {% else %}
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                 <ul class="breadcome-menu">
+                                    <li><a href="#">Electra</a>
+                                    </li>
+                                 </ul>
+                              </div>
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- Single pro tab review Start-->
+         {% block content %}
+         {% endblock %}
+         <div class="footer-copyright-area">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                     <div class="text-center login-footer">
+                        <p>Copyright © 2021. All rights reserved. Template by <a href=".">Electra</a></p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- bootstrap JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/bootstrap.min.js' %}"></script>
+      <!-- wow JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/wow.min.js' %}"></script>
+      <!-- price-slider JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery-price-slider.js' %}"></script>
+      <!-- meanmenu JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.meanmenu.js' %}"></script>
+      <!-- owl.carousel JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/owl.carousel.min.js' %}"></script>
+      <!-- sticky JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.sticky.js' %}"></script>
+      <!-- scrollUp JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.scrollUp.min.js' %}"></script>
+      <!-- mCustomScrollbar JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+      <script src="{% static 'js/common_js/mCustomScrollbar-active.js' %}"></script>
+      <!-- metisMenu JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/metisMenu.min.js' %}"></script>
+      <script src="{% static 'js/common_js/metisMenu-active.js' %}"></script>
+      <!-- summernote JS
+         ============================================ -->
+      <script src="{% static 'js/summernote/summernote.min.js' %}"></script>
+      <script src="{% static 'js/summernote/summernote-active.js' %}"></script>
+      <!-- morrisjs JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.sparkline.min.js' %}"></script>
+      <script src="{% static 'js/common_js/jquery.charts-sparkline.js' %}"></script>
+      <!-- calendar JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/moment.min.js' %}"></script>
+      <!-- maskedinput JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.maskedinput.min.js' %}"></script>
+      <script src="{% static 'js/common_js/masking-active.js' %}"></script>
+      <!-- touchspin JS
+         ============================================ -->
+      <script src="{% static  'js/common_js/jquery.bootstrap-touchspin.min.js' %}"></script>
+      <script src="{% static  'js/common_js/touchspin-active.js' %}"></script>
+      <!-- colorpicker JS
+         ============================================ -->
+      <script src="{% static  'js/common_js/jquery.spectrum.min.js' %}"></script>
+      <script src="{% static  'js/common_js/color-picker-active.js' %}"></script>
+      <!-- datepicker JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/bootstrap-datepicker.js' %}"></script>
+      <script src="{% static 'js/common_js/jquery-ui.min.js' %}"></script>
+      <script src="{% static 'js/common_js/datepicker-active.js' %}"></script>
+      <!-- form validate JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jquery.form.min.js' %}"></script>
+      <script src="{% static 'js/common_js/jquery.validate.min.js' %}"></script>
+      <script src="{% static 'js/common_js/form-active.js' %}"></script>
+      <!-- dropzone JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/dropzone.js' %}"></script>
+      <!-- tab JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/tab.js' %}"></script>
+      <script src="{% static 'js/common_js/fullcalendar.min.js' %}"></script>
+      <script src="{% static 'js/common_js/fullcalendar-active.js' %}"></script>
+      <!-- input-mask JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/jasny-bootstrap.min.js' %}"></script>
+      <!-- chosen JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/chosen.jquery.js' %}"></script>
+      ` <script src="{% static 'js/common_js/chosen-active.js' %}"></script>
+      <!-- select2 JS
+         ============================================ -->
+      <script src="{% static  'js/common_js/select2.full.min.js' %}"></script>
+      <script src="{%  static  'js/common_js/select2-active.js' %}"></script>
+      <!-- knob JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/knob-active.js' %}"></script>
+      <script src="{% static  'js/common_js/jquery.knob.js' %}"></script>
+      <!-- rangle-slider JS
+         ============================================ -->
+      <script src="{% static  'js/common_js/jquery-ui-1.10.4.custom.min.js' %}"></script>
+      <script src="{%  static  'js/common_js/jquery-ui-touch-punch.min.js' %}"></script>
+      <script src="{% static 'js/common_js/rangle-active.js' %}"></script>
+      <!-- plugins JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/plugins.js' %}"></script>
+      <!-- main JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/main.js' %}"></script>
+      <!-- tawk chat JS
+         ============================================ -->
+      <script src="{% static 'js/common_js/tawk-chat.js' %}"></script>
+      <!-- Sweet alert cdn start here -->
+      <script src = "{% static 'js/common_js/sweet_alert.js' %}"></script>
+      <!-- Sweet alert cdn ends here  -->
+      <script>
+         $(document).on('click','#logout_button',function(){
+         swal({
+           title: "Are you sure You Want to Logout ?",
+           icon: "warning",
+           buttons: true,
+           dangerMode: true,
+         })
+         .then((ok) => {
+           if (ok) {
+             window.location.href = '/users/logout/';
+             swal("Success ! your account has been Logout!", {
+               icon: "warning",
+              dangerMode: true,
+         
+             });
+           } 
+         });
+         
+         })
+         
+      </script>
+   </body>
+</html>
